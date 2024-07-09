@@ -6,6 +6,7 @@ This is mainly for teaching purposes. It describes how to create a VM on AWS tha
 
 ## What VM to create?
 - Standard Ubuntu based instance with open ports 80 and 443.
+- Machine type: `t3a.small`
 
 ## Connect via SSH into the VM:
 - Open a terminal on your local machine.
@@ -50,7 +51,21 @@ sudo ufw status
 ## How to run the script
 Create some folder and add (using `nano`) a `docker-compose.yml` file inside. Content is in this repo and logic is clear.
 
+First, create a folder for PostgreSQL database data and link it in the file. Default one is called `dbdata`.
+
+Second, modify all passwords and usernames in the `docker-compose.yml` to the desired value.
+
 Then run:
 ```bash
-sudo docker-compose up
+sudo docker-compose up -d
 ```
+
+## How to get inside once everything is ready?
+Go to the DNS suggested on AWS (or use the IP directly) in your browser.
+
+Log inside the PgAdmin instance using credentials in your `docker-compose.yml` file. 
+
+Then, click to `Add New Server` and use credentials:
+Host: postgres
+Username: postgres
+Password: _One you have set_
