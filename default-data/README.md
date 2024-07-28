@@ -243,3 +243,89 @@ INSERT INTO GPMedication (PatientID, PrescribingDate, Medication, Type, CourseLe
 (30, '2024-07-30', 'Metformin', 'Biguanide', 90);
 ```
 These INSERT statements provide synthetic data for the PatientDemographics, GPAppointments, GPOutcomes, and GPMedication tables. Each table has at least 30 entries, ensuring a diverse set of synthetic records.
+
+## Modification of PatientDemographics table
+ChatGPT command:
+```
+Modify PatientDemographics  table so it matches UK distribution of races
+```
+
+### Outputs
+To match the UK distribution of races more closely, we can use the approximate racial/ethnic distribution percentages from the most recent UK census data. Here is an example of how the data might be distributed:
+
+- White: 86%
+- Asian: 7.5%
+- Black: 3.3%
+- Mixed: 2.2%
+- Other: 1%
+
+- We will modify the PatientDemographics table data accordingly:
+
+```sql
+-- Reset the table for demonstration
+TRUNCATE TABLE PatientDemographics RESTART IDENTITY;
+
+INSERT INTO PatientDemographics (DeathDate, Deceased, Ethnicity, Gender, DoB, Height_m, Weight_kg, IMD_Score, FrailtyScore) VALUES
+(NULL, FALSE, 'White', 'Male', '1980-01-15', 1.75, 80.5, 15.0, 1.2),
+(NULL, FALSE, 'White', 'Female', '1990-05-20', 1.65, 70.0, 20.5, 2.0),
+('2023-07-01', TRUE, 'White', 'Male', '1955-12-10', 1.80, 85.0, 25.0, 3.5),
+(NULL, FALSE, 'White', 'Female', '1985-03-30', 1.55, 50.5, 10.0, 0.8),
+('2024-01-01', TRUE, 'White', 'Female', '1945-07-22', 1.60, 60.0, 30.5, 4.0),
+(NULL, FALSE, 'White', 'Male', '1975-11-11', 1.78, 78.0, 18.0, 1.5),
+(NULL, FALSE, 'White', 'Female', '1995-08-25', 1.62, 68.5, 22.0, 2.5),
+(NULL, FALSE, 'White', 'Male', '1988-04-14', 1.72, 75.0, 12.5, 1.0),
+(NULL, FALSE, 'White', 'Male', '2000-12-31', 1.80, 82.0, 16.5, 1.8),
+(NULL, FALSE, 'White', 'Female', '1970-06-18', 1.70, 76.5, 27.5, 3.0),
+(NULL, FALSE, 'White', 'Male', '1992-09-12', 1.74, 81.0, 19.5, 2.2),
+(NULL, FALSE, 'White', 'Female', '1982-07-30', 1.58, 52.0, 14.5, 1.1),
+(NULL, FALSE, 'White', 'Female', '1965-11-05', 1.65, 70.5, 23.0, 2.8),
+(NULL, FALSE, 'White', 'Male', '1985-10-20', 1.83, 83.0, 18.5, 1.7),
+(NULL, FALSE, 'White', 'Female', '1993-05-30', 1.67, 69.5, 20.0, 2.4),
+(NULL, FALSE, 'White', 'Male', '1989-03-25', 1.76, 77.0, 15.5, 1.3),
+(NULL, FALSE, 'White', 'Female', '1997-11-17', 1.70, 75.0, 21.0, 2.6),
+(NULL, FALSE, 'White', 'Male', '1960-08-30', 1.78, 80.0, 28.0, 3.2),
+(NULL, FALSE, 'White', 'Female', '1990-10-15', 1.64, 67.0, 22.5, 2.7),
+(NULL, FALSE, 'White', 'Male', '1980-02-10', 1.82, 79.0, 13.0, 1.0),
+(NULL, FALSE, 'White', 'Female', '1975-07-01', 1.60, 60.5, 29.0, 3.8),
+(NULL, FALSE, 'White', 'Male', '1992-05-05', 1.85, 84.0, 17.0, 1.4),
+(NULL, FALSE, 'White', 'Female', '1987-12-18', 1.63, 65.5, 24.5, 2.9),
+(NULL, FALSE, 'White', 'Male', '1991-09-23', 1.77, 76.0, 16.0, 1.5),
+(NULL, FALSE, 'White', 'Female', '1983-04-30', 1.68, 72.0, 26.0, 3.1),
+(NULL, FALSE, 'White', 'Male', '1970-01-20', 1.80, 82.5, 19.0, 2.1),
+(NULL, FALSE, 'White', 'Female', '1994-11-25', 1.61, 63.0, 23.5, 2.8),
+(NULL, FALSE, 'White', 'Male', '1986-07-10', 1.75, 74.0, 14.0, 1.2),
+(NULL, FALSE, 'White', 'Female', '1999-08-16', 1.69, 71.0, 25.0, 3.0),
+(NULL, FALSE, 'White', 'Male', '1984-12-05', 1.84, 85.0, 18.0, 1.6),
+(NULL, FALSE, 'Asian', 'Female', '1990-05-20', 1.65, 70.0, 20.5, 2.0),
+(NULL, FALSE, 'Asian', 'Female', '1985-03-30', 1.55, 50.5, 10.0, 0.8),
+(NULL, FALSE, 'Asian', 'Male', '1988-04-14', 1.72, 75.0, 12.5, 1.0),
+(NULL, FALSE, 'Asian', 'Female', '1992-09-12', 1.64, 67.0, 22.5, 2.7),
+(NULL, FALSE, 'Asian', 'Male', '1991-09-23', 1.77, 76.0, 16.0, 1.5),
+(NULL, FALSE, 'Asian', 'Male', '1991-09-23', 1.77, 76.0, 16.0, 1.5),
+(NULL, FALSE, 'Asian', 'Male', '1989-03-25', 1.76, 77.0, 15.5, 1.3),
+(NULL, FALSE, 'Asian', 'Female', '1997-11-17', 1.70, 75.0, 21.0, 2.6),
+(NULL, FALSE, 'Asian', 'Female', '1990-10-15', 1.64, 67.0, 22.5, 2.7),
+(NULL, FALSE, 'Black', 'Male', '1980-01-15', 1.75, 80.5, 15.0, 1.2),
+(NULL, FALSE, 'Black', 'Female', '1990-05-20', 1.65, 70.0, 20.5, 2.0),
+('2023-07-01', TRUE, 'Black', 'Male', '1955-12-10', 1.80, 85.0, 25.0, 3.5),
+(NULL, FALSE, 'Black', 'Female', '1985-03-30', 1.55, 50.5, 10.0, 0.8),
+('2024-01-01', TRUE, 'Black', 'Female', '1945-07-22', 1.60, 60.0, 30.5, 4.0),
+(NULL, FALSE, 'Black', 'Male', '1975-11-11', 1.78, 78.0, 18.0, 1.5),
+(NULL, FALSE, 'Black', 'Female', '1995-08-25', 1.62, 68.5, 22.0, 2.5),
+(NULL, FALSE, 'Black', 'Male', '1988-04-14', 1.72, 75.0, 12.5, 1.0),
+(NULL, FALSE, 'Mixed', 'Male', '2000-12-31', 1.80, 82.0, 16.5, 1.8),
+(NULL, FALSE, 'Mixed', 'Female', '1970-06-18', 1.70, 76.5, 27.5, 3.0),
+(NULL, FALSE, 'Mixed', 'Male', '1992-09-12', 1.74, 81.0, 19.5, 2.2),
+(NULL, FALSE, 'Mixed', 'Female', '1982-07-30', 1.58, 52.0, 14.5, 1.1),
+(NULL, FALSE, 'Mixed', 'Female', '1965-11-05', 1.65, 70.5, 23.0, 2.8),
+(NULL, FALSE, 'Mixed', 'Male', '1985-10-20', 1.83, 83.0, 18.5, 1.7),
+(NULL, FALSE, 'Mixed', 'Female', '1993-05-30', 1.67, 69.5, 20.0, 2.4),
+(NULL, FALSE, 'Mixed', 'Male', '1989-03-25', 1.76, 77.0, 15.5, 1.3),
+(NULL, FALSE, 'Mixed', 'Female', '1997-11-17', 1.70, 75.0, 21.0, 2.6),
+(NULL, FALSE, 'Other', 'Male', '1960-08-30', 1.78, 80.0, 28.0, 3.2),
+(NULL, FALSE, 'Other', 'Female', '1990-10-15', 1.64, 67.0, 22.5, 2.7),
+(NULL, FALSE, 'Other', 'Male', '1980-02-10', 1.82, 79.0, 13.0, 1.0),
+(NULL, FALSE, 'Other', 'Female', '1975-07-01', 1.60, 60.5, 29.0, 3.8),
+(NULL, FALSE, 'Other', 'Male', '1992-05-05', 1.85, 84.0, 17.0, 1.4),
+(NULL, FALSE, 'Other', 'Female', '1987-12-18', 1.63, 65.5, 24.5, 2.9);
+```
