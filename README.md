@@ -19,9 +19,32 @@ Update repo list:
 sudo apt update
 ```
 
+Remove existing installations:
+```bash
+ for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+```
+
 Install Docker:
 ```bash
-sudo apt install -y docker.io
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+# Installation itself
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+Enable Docker
+```bash
 sudo systemctl start docker
 sudo systemctl enable docker
 ```
@@ -34,14 +57,18 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 Add your user to the docker group (optional, for convenience):
 ```bash
-sudo usermod -aG docker $USER
+sudo usermod -a -G docker $USER
 ```
 
+**Important:** Reboot afterwards!
+
 ## How to activate firewall
+**WARNING:** Be careful to enable ssh connection!
 ```bash
 sudo ufw status
 sudo ufw enable
 sudo ufw allow 80/tcp
+sudo ufw allow ssh
 ```
 To check the status
 ```bash
