@@ -19,9 +19,32 @@ Update repo list:
 sudo apt update
 ```
 
+Remove existing installations:
+```bash
+ for pkg in docker.io docker-doc docker-compose docker-compose-v2 podman-docker containerd runc; do sudo apt-get remove $pkg; done
+```
+
 Install Docker:
 ```bash
-sudo apt install -y docker.io
+# Add Docker's official GPG key:
+sudo apt-get update
+sudo apt-get install ca-certificates curl
+sudo install -m 0755 -d /etc/apt/keyrings
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+# Add the repository to Apt sources:
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+# Installation itself
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+Enable Docker
+```bash
 sudo systemctl start docker
 sudo systemctl enable docker
 ```
@@ -34,26 +57,65 @@ sudo chmod +x /usr/local/bin/docker-compose
 
 Add your user to the docker group (optional, for convenience):
 ```bash
-sudo usermod -aG docker $USER
+sudo usermod -a -G docker $USER
 ```
 
+**Important:** Reboot afterwards!
+
 ## How to activate firewall
+**WARNING:** Be careful to enable ssh connection!
 ```bash
 sudo ufw status
 sudo ufw enable
 sudo ufw allow 80/tcp
+sudo ufw allow 5432/tcp
+sudo ufw allow ssh
 ```
 To check the status
 ```bash
 sudo ufw status
 ```
 
+## How to sort out ssl
+NOTE: It is not possible to assign LetsEncrypt certificate now.
+
+Install Certbot to have LetsEncrypt certificate:
+```bash
+sudo apt install certbot
+```
+Create a folder for the certificate that is mounted into the docker compose cluster. The default one is `letsencrypt`.
+
+Inside the folder for certificate, run the following:
+```bash
+sudo certbot certonly --standalone
+```
+
+### How to create default certificates
+Run in the correct folder:
+```bash
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout server.key -out server.crt
+```
+Also, rename `server.crt` to `server.cert`:
+```bash
+mv server.crt server.cert
+```
+
 ## How to run the script
 Create some folder and add (using `nano`) a `docker-compose.yml` file inside. Content is in this repo and logic is clear.
 
-First, create a folder for PostgreSQL database data and link it in the file. Default one is called `dbdata`.
+First, create a folder for PostgreSQL database data and link it in the file. Default one is called `postgres_data`.
 
 Second, modify all passwords and usernames in the `docker-compose.yml` to the desired value.
+
+Run the following:
+```shell
+sudo useradd pgadmin
+```
+and change owner of volumes for pgadmin container (create them first).
+```bash
+sudo chown -R 5050:5050 pgadmin_data/
+sudo chown -R 5050:5050 certs/
+```
 
 Then run:
 ```bash
