@@ -14,9 +14,12 @@ services:
   postgres:
     image: postgres
     container_name: postgres
+    restart: always  # Automatically restart if the container crashes
     environment:
       - POSTGRES_PASSWORD=TODO_CHANGE_ME
+      - POSTGRES_USER=TODO_CHANGE_ME
+      - POSTGRES_DB=TODO_CHANGE_ME
     ports:
       - "5432:5432"
     volumes:
-      - ./dbdata:/dbscripts  # TODO: CHECK
+      - postgres_data:/var/lib/postgresql/data
