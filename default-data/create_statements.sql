@@ -77,7 +77,7 @@ CREATE TABLE e3_fu (
 CREATE TABLE e3_nod (
     PatID INT NOT NULL,
     DiedDate DATE,
-    DiedTime TIMESTAMP,
+    DiedTime TIME,
     CauseOfDeath INT,
     CauseOfDeathSpecify VARCHAR(100),
     CreatedDate DATE,
