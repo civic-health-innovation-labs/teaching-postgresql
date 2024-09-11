@@ -94,7 +94,6 @@ CREATE TABLE e3_surg (
     Weight NUMERIC(4,1),
     Smoking INT,
     ConMedCond INT,
-    CourseLength INT,
     ReqTreatment INT,
     Diabetic INT,
     EnzymeSupp INT,
