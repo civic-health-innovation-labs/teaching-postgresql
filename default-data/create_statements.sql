@@ -12,11 +12,11 @@ CREATE TABLE PatientDemographics (
 );
 
 CREATE TABLE GPAppointments (
-    PatientID INT NOT NULL,
+    PatientID INT,
     AppointmentID SERIAL PRIMARY KEY,
     AppointmentDate TIMESTAMP NOT NULL,
     Status VARCHAR(20),
-    FOREIGN KEY (PatientID) REFERENCES PatientDemographics(PatientID)
+    FOREIGN KEY (PatientID) REFERENCES PatientDemographics(PatientID) ON DELETE SET NULL
 );
 
 CREATE TABLE GPOutcomes (
