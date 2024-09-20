@@ -131,3 +131,6 @@ Then, click to `Add New Server` and use credentials:
 Host: postgres
 Username: postgres
 Password: _One you have set_
+
+## Troubleshooting
+What frequently happens is that the pgAdmin instance becomes unresponsive (i.e., it's not possible to access the initial web page). If this occurs, the easiest way to fix it is to use an SSH connection to the VM and reset the entire cluster. To do this, navigate to the folder containing the `docker-compose.yml` file and run `docker compose down`. Once it finishes, run `docker compose up -d` to restart the cluster.
