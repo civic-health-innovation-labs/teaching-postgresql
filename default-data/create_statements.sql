@@ -114,3 +114,81 @@ CREATE TABLE e3_surg (
     Diff TEXT,
     FOREIGN KEY (PatID) REFERENCES e3_baseline(PatID)
 );
+
+
+-- CPRD Synthetic Records
+CREATE TABLE cprdsyn_region (
+    regionid SERIAL PRIMARY KEY,
+    description VARCHAR(25)
+);
+
+CREATE TABLE cprdsyn_practice (
+    pracid SERIAL PRIMARY KEY,
+    region INT,
+    FOREIGN KEY (region) REFERENCES cprdsyn_region(regionid)
+);
+
+CREATE TABLE cprdsyn_gender (
+    genderid SERIAL PRIMARY KEY,
+    description VARCHAR(15)
+);
+
+CREATE TABLE cprdsyn_patienttype (
+    patienttypeid SERIAL PRIMARY KEY,
+    description VARCHAR(30)
+);
+
+CREATE TABLE cprdsyn_patient (
+    patsid BIGSERIAL PRIMARY KEY,
+    pracid INT,
+    gender INT,
+    emis_ddate DATE,
+    patienttypeid INT,
+    acceptable INT,
+    regstartdate DATE,
+    dob DATE,
+    ageatreg INT,
+    FOREIGN KEY (pracid) REFERENCES cprdsyn_practice(pracid),
+    FOREIGN KEY (gender) REFERENCES cprdsyn_gender(genderid),
+    FOREIGN KEY (patienttypeid) REFERENCES cprdsyn_patienttype(patienttypeid)
+);
+
+CREATE TABLE cprdsyn_md (
+    medcodeid BIGSERIAL PRIMARY KEY,
+    term VARCHAR(70),
+    originalreadcode VARCHAR(10),
+    cleansedreadcode VARCHAR(10),
+    snomedctconceptid BIGINT,
+    snomedctdescriptionid BIGINT
+);
+
+CREATE TABLE cprdsyn_observation (
+    patsid BIGINT NOT NULL,
+    obsid BIGINT,
+    obsdate DATE,
+    enterdate DATE,
+    medcodeid BIGINT NOT NULL,
+    FOREIGN KEY (patsid) REFERENCES cprdsyn_patient(patsid),
+    FOREIGN KEY (medcodeid) REFERENCES cprdsyn_md(medcodeid)
+);
+
+CREATE TABLE cprdsyn_pd (
+    prodcodeid BIGSERIAL PRIMARY KEY,
+    termfromemis VARCHAR(100),
+    productname VARCHAR(100),
+    formulation VARCHAR(30),
+    routeofadministration VARCHAR(30),
+    drugsubstancename VARCHAR(150),
+    substancestrength VARCHAR(130)
+);
+
+CREATE TABLE cprdsyn_medication (
+    patsid BIGINT NOT NULL,
+    issuedate DATE,
+    enterdate DATE,
+    prodcodeid BIGINT,
+    quantity INT,
+    duration INT,
+    FOREIGN KEY (patsid) REFERENCES cprdsyn_patient(patsid),
+    FOREIGN KEY (prodcodeid) REFERENCES cprdsyn_pd(prodcodeid)
+);
